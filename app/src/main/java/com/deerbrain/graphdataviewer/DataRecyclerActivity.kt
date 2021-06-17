@@ -20,6 +20,7 @@ class DataRecyclerActivity : AppCompatActivity() {
 
     var rawBuckData: List<BuckData> = emptyList()
     val dataSource = ChartAdapter()
+    var adapter :ChartsAdapter ?= null
     var displayData: Array<String> = arrayOf("Hour of Day","Time Till Dusk", "Trail Camera")
     var displayedGraphs: ArrayList<GraphRecyclerItem> = ArrayList<GraphRecyclerItem>()
 
@@ -39,6 +40,8 @@ class DataRecyclerActivity : AppCompatActivity() {
             lay4?.setBackgroundResource(0)
             lay5?.setBackgroundResource(0)
             lay6?.setBackgroundResource(0)
+            adapter?.notifyDataSetChanged()
+
 
 
 
@@ -51,6 +54,7 @@ class DataRecyclerActivity : AppCompatActivity() {
             lay4?.setBackgroundResource(0)
             lay5?.setBackgroundResource(0)
             lay6?.setBackgroundResource(0)
+            adapter?.notifyDataSetChanged()
 
         }
         lay3?.setOnClickListener{
@@ -61,6 +65,8 @@ class DataRecyclerActivity : AppCompatActivity() {
             lay4?.setBackgroundResource(0)
             lay5?.setBackgroundResource(0)
             lay6?.setBackgroundResource(0)
+            adapter?.notifyDataSetChanged()
+
         }
         lay4?.setOnClickListener{
             lay1?.setBackgroundResource(0)
@@ -69,6 +75,8 @@ class DataRecyclerActivity : AppCompatActivity() {
             lay4?.setBackgroundResource(R.drawable.bg_rect_select)
             lay5?.setBackgroundResource(0)
             lay6?.setBackgroundResource(0)
+            adapter?.notifyDataSetChanged()
+
 
         }
         lay5?.setOnClickListener{
@@ -78,6 +86,8 @@ class DataRecyclerActivity : AppCompatActivity() {
             lay4?.setBackgroundResource(0)
             lay5?.setBackgroundResource(R.drawable.bg_rect_select)
             lay6?.setBackgroundResource(0)
+            adapter?.notifyDataSetChanged()
+
 
         }
         lay6?.setOnClickListener{
@@ -87,6 +97,8 @@ class DataRecyclerActivity : AppCompatActivity() {
             lay4?.setBackgroundResource(0)
             lay5?.setBackgroundResource(0)
             lay6?.setBackgroundResource(R.drawable.bg_rect_select)
+            adapter?.notifyDataSetChanged()
+
 
         }
 
@@ -97,7 +109,7 @@ class DataRecyclerActivity : AppCompatActivity() {
         // we need adapter for graphs that handle all type of card
 
         tableView?.layoutManager = LinearLayoutManager(this)
-        val tableViewAdapter = ChartsAdapter(displayedGraphs,this, Callback {
+        adapter = ChartsAdapter(displayedGraphs,this, Callback {
 
             var intent = Intent(this, DetailActivity::class.java)
             intent.putExtra("heading",displayedGraphs[it as Int].theHeaderLabel)
@@ -106,7 +118,7 @@ class DataRecyclerActivity : AppCompatActivity() {
 
 
         })
-        tableView?.adapter =  tableViewAdapter
+        tableView?.adapter =  adapter
 
     }
 

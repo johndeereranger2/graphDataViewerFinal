@@ -1,6 +1,63 @@
 package com.deerbrain.graphdataviewer.Charts
 
-class DeerPieChartView {
+import android.content.Context
+import android.graphics.Color
+import android.util.Pair
+import android.view.WindowManager
+import android.view.animation.DecelerateInterpolator
+import com.deerbrain.graphdataviewer.MainActivity.Companion.context
+import com.deerbrain.graphdataviewer.Utill.ScreenResolutionForResult
+import com.deerbrain.graphdataviewer.Utill.animatePieViewResolution
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.PieEntry
+import com.razerdp.widget.animatedpieview.AnimatedPieView
+import com.razerdp.widget.animatedpieview.AnimatedPieViewConfig
+import com.razerdp.widget.animatedpieview.data.SimplePieInfo
+import java.util.*
+import kotlin.collections.ArrayList
+
+class DeerPieChartView(pieView: AnimatedPieView) {
+
+    private var pie: AnimatedPieView = pieView
+
+    fun setValueForPieView(context: Context, list: ArrayList<SimplePieInfo>) {
+        val windowManager =
+            context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        // will adjust according to every screen
+        val strokewidth: Int = ScreenResolutionForResult(windowManager)
+        val pair: Pair<Int, Int> =
+            animatePieViewResolution(windowManager)
+        var pieView = pie
+
+        val time = floatArrayOf(55f, 95f, 30f, 360 - (55 + 95 + 30).toFloat())
+        val activity =
+            arrayOf("Jan", "Feb", "March", "")
+        val pieEntires: MutableList<PieEntry> = ArrayList()
+        for (i in 0 until time.size) {
+            pieEntires.add(PieEntry(time[i], activity[i]))
+        }
+        val config = AnimatedPieViewConfig()
+        for (data in list){
+            config.addData(data)
+        }
+
+
+        config.startAngle(-90f) // start angle offset
+            .splitAngle(0.9649358f)
+            .drawText(true)
+            .duration(1200)
+            .pieRadiusRatio(1.0f)
+            .textSize(pair.first.toFloat())
+            .pieRadius(pair.second.toFloat()) //                    .textMargin(5)// Margin between text and guide line
+            .autoSize(true)
+            .strokeWidth(strokewidth)
+            .focusAlphaType(AnimatedPieViewConfig.FOCUS_WITH_ALPHA)
+            .textGravity(AnimatedPieViewConfig.ABOVE)
+            .interpolator(DecelerateInterpolator())
+        pieView?.applyConfig(config)
+        pieView?.start()
+    }
 }
 
 
